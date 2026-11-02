@@ -1,0 +1,81 @@
+{
+  "name": "open-with-external",
+  "displayName": "Open With External",
+  "description": "Open local Markdown and text files in Typora from VS Code and Cursor.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volunteer1024/open-with-typora.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "extensionKind": ["ui"],
+  "categories": ["Other"],
+  "keywords": ["typora", "markdown", "external editor", "cursor"],
+  "main": "./dist/extension.js",
+  "activationEvents": ["onCommand:openWithExternal.openWithTypora"],
+  "contributes": {
+    "commands": [
+      {
+        "command": "openWithExternal.openWithTypora",
+        "title": "Open with Typora"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "openWithExternal.openWithTypora",
+          "when": "resourceScheme == file && !explorerResourceIsFolder && resourceExtname =~ /^\\.(md|markdown|mdx|txt)$/i",
+          "group": "navigation@-100"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "openWithExternal.openWithTypora",
+          "when": "resourceScheme == file && resourceExtname =~ /^\\.(md|markdown|mdx|txt)$/i",
+          "group": "navigation@-100"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "openWithExternal.openWithTypora",
+          "when": "resourceScheme == file && resourceExtname =~ /^\\.(md|markdown|mdx|txt)$/i",
+          "group": "navigation@-100"
+        }
+      ],
+      "scm/resourceState/context": [
+        {
+          "command": "openWithExternal.openWithTypora",
+          "when": "scmProvider == git && resourceScheme == file && resourceExtname =~ /^\\.(md|markdown|mdx|txt)$/i",
+          "group": "navigation@-100"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Open With External",
+      "properties": {
+        "openWithExternal.typoraPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Typora application/executable path. Empty uses `/Applications/Typora.app` on macOS, `Typora.exe` on Windows, or `typora` on Linux. Settings apply to this machine.",
+          "scope": "machine"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p tsconfig.json",
+    "check": "npm run compile && node --test test/*.test.cjs",
+    "package": "npm run compile && vsce package --no-dependencies --out open-with-external-0.1.0.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/vscode": "1.85.0",
+    "@vscode/vsce": "^4.1.0",
+    "typescript": "^5.8.3"
+  }
+}
